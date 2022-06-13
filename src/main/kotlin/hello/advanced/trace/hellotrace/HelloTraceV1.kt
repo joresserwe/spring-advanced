@@ -40,8 +40,7 @@ class HelloTraceV1 {
     }
 
     fun complete(status: TraceStatus, e: Exception?) {
-        val stopTimeMs = System.currentTimeMillis()
-        val resultTimeMs = stopTimeMs - status.startTimeMs
+        val resultTimeMs = System.currentTimeMillis() - status.startTimeMs
         val traceId = status.traceId
         e?.let {
             log.info {
@@ -50,7 +49,7 @@ class HelloTraceV1 {
                         EX_PREFIX,
                         traceId.level
                     )
-                }${status.message} time=$resultTimeMs ex=$e"
+                }${status.message} time=${resultTimeMs}ms ex=$e"
             }
         } ?: run {
             log.info {
@@ -59,7 +58,7 @@ class HelloTraceV1 {
                         COMPLETE_PREFIX,
                         traceId.level
                     )
-                }${status.message}] time=$resultTimeMs"
+                }${status.message} time=${resultTimeMs}ms"
             }
         }
     }
