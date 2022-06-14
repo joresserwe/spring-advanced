@@ -5,7 +5,7 @@ import mu.KotlinLogging
 class ThreadLocalService {
     private val log = KotlinLogging.logger {}
 
-    private var nameStore: ThreadLocal<String> = ThreadLocal()
+    private val nameStore = ThreadLocal<String>()
 
     fun logic(name: String): String {
         log.info { "저장 name=$name -> nameStore=${nameStore.get()}" }
@@ -16,6 +16,6 @@ class ThreadLocalService {
     }
 
     private fun sleep(millis: Long) {
-        Thread.sleep(1000)
+        Thread.sleep(millis)
     }
 }

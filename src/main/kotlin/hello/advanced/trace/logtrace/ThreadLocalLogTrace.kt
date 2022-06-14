@@ -9,7 +9,7 @@ class ThreadLocalLogTrace : LogTrace {
 
     private val log = KotlinLogging.logger {}
 
-    private var traceIdHolder: ThreadLocal<TraceId> = ThreadLocal()
+    private val traceIdHolder = ThreadLocal<TraceId>()
 
     private companion object {
         const val START_PREFIX = "-->"
