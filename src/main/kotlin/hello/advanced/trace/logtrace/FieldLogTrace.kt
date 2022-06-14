@@ -1,14 +1,14 @@
-package hello.advanced.trace.hellotrace
+package hello.advanced.trace.logtrace
 
 import hello.advanced.trace.TraceId
 import hello.advanced.trace.TraceStatus
 import mu.KotlinLogging
-import org.springframework.stereotype.Component
 
-@Component
-class HelloTraceV2 {
+class FieldLogTrace : LogTrace {
 
     private val log = KotlinLogging.logger {}
+
+    private var traceIdHolder: TraceId? = null // 동시성 이슈 발생
 
     private companion object {
         const val START_PREFIX = "-->"
@@ -16,42 +16,31 @@ class HelloTraceV2 {
         const val EX_PREFIX = "<X-"
     }
 
-    fun begin(message: String): TraceStatus {
-        val traceId = TraceId()
+    override fun begin(message: String): TraceStatus {
+        syncTraceId()
+        val traceId = traceIdHolder!!
         val startTimeMs = System.currentTimeMillis()
         log.info { "[${traceId.id}] ${addSpace(START_PREFIX, traceId.level)}$message" }
         return TraceStatus(traceId, startTimeMs, message)
     }
 
-    // V2
-    fun beginSync(beforeTraceId: TraceId, message: String): TraceStatus {
-        val nextTraceId = beforeTraceId.createNextId()
-        val startTimeMs = System.currentTimeMillis()
-        log.info { "[${nextTraceId.id}] ${addSpace(START_PREFIX, nextTraceId.level)}$message" }
-        return TraceStatus(nextTraceId, startTimeMs, message)
+    private fun syncTraceId() {
+        traceIdHolder = traceIdHolder?.createNextId() ?: TraceId()
     }
 
-    private fun addSpace(prefix: String, level: Int): String {
-        val sb = StringBuilder()
-        for (i in 0 until level) {
-            sb.append(if (i == level - 1) "|$prefix" else "|    ")
-        }
-        return sb.toString()
-    }
 
-    fun end(status: TraceStatus) {
+    override fun end(status: TraceStatus) {
         complete(status, null)
     }
 
-    fun exception(status: TraceStatus, e: Exception) {
+    override fun exception(status: TraceStatus, e: Exception) {
         complete(status, e)
     }
 
-    fun complete(status: TraceStatus, e: Exception?) {
+    private fun complete(status: TraceStatus, e: Exception?) {
         val resultTimeMs = System.currentTimeMillis() - status.startTimeMs
         val traceId = status.traceId
         e?.let {
-
             log.info {
                 "[${traceId.id}] ${
                     addSpace(
@@ -70,5 +59,20 @@ class HelloTraceV2 {
                 }${status.message} time=${resultTimeMs}ms"
             }
         }
+        releaseTraceId()
     }
+
+    private fun releaseTraceId() {
+        traceIdHolder = if (traceIdHolder!!.isFirstLevel()) null else traceIdHolder!!.createPrevId()
+    }
+
+
+    private fun addSpace(prefix: String, level: Int): String {
+        val sb = StringBuilder()
+        for (i in 0 until level) {
+            sb.append(if (i == level - 1) "|$prefix" else "|    ")
+        }
+        return sb.toString()
+    }
+
 }
