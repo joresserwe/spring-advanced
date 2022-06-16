@@ -29,7 +29,6 @@ class ThreadLocalLogTrace : LogTrace {
         traceIdHolder.set(traceIdHolder.get()?.createNextId() ?: TraceId())
     }
 
-
     override fun end(status: TraceStatus) {
         complete(status, null)
     }
