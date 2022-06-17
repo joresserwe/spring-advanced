@@ -1,6 +1,7 @@
+package hello.advanced.trace.logtrace
+
 import hello.advanced.trace.TraceId
 import hello.advanced.trace.TraceStatus
-import hello.advanced.trace.logtrace.LogTrace
 import mu.KotlinLogging
 
 class FieldLogTrace : LogTrace {
