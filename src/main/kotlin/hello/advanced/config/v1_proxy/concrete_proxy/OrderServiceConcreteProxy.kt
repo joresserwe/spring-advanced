@@ -12,7 +12,7 @@ class OrderServiceConcreteProxy(
 
     override fun save(itemId: String) {
         val template = TraceTemplate(trace)
-        template.execute("OrderRepository.save()") {
+        template.execute("OrderService.save()") {
             super.save(itemId)
         }
     }

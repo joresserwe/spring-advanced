@@ -13,7 +13,7 @@ class OrderControllerConcreteProxy(
     override fun request(itemId: String): String {
         val template = TraceTemplate(trace)
         lateinit var result: String
-        template.execute("OrderRepository.save()") {
+        template.execute("OrderController.request()") {
             result = super.request(itemId)
         }
         return result
