@@ -3,7 +3,9 @@ package hello.advanced.trace.logtrace
 import hello.advanced.trace.TraceId
 import hello.advanced.trace.TraceStatus
 import mu.KotlinLogging
+import org.springframework.stereotype.Component
 
+@Component
 class ThreadLocalLogTrace : LogTrace {
 
     private val log = KotlinLogging.logger {}

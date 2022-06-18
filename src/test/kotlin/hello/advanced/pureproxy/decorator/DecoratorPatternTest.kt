@@ -33,6 +33,4 @@ internal class DecoratorPatternTest {
         val decoratorPatternClient = DecoratorPatternClient(timeDecorator)
         decoratorPatternClient.execute()
     }
-
-
 }
