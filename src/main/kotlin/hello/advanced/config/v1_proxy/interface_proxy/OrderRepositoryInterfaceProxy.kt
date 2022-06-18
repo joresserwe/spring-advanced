@@ -1,17 +1,17 @@
 package hello.advanced.config.v1_proxy.interface_proxy
 
-import hello.advanced.app.v1.OrderServiceV1
+import hello.advanced.app.v1.OrderRepositoryV1
 import hello.advanced.trace.callback.TraceTemplate
 import hello.advanced.trace.logtrace.LogTrace
 
-class OrderServiceProxy(
-    private val target: OrderServiceV1,
+class OrderRepositoryInterfaceProxy(
+    private val target: OrderRepositoryV1,
     private val trace: LogTrace
-) : OrderServiceV1 {
+) : OrderRepositoryV1 {
 
     override fun save(itemId: String) {
         val template = TraceTemplate(trace)
-        template.execute("OrderService.request()") {
+        template.execute("orderRepository.save()") {
             target.save(itemId)
         }
     }

@@ -4,7 +4,7 @@ import hello.advanced.app.v1.OrderControllerV1
 import hello.advanced.trace.callback.TraceTemplate
 import hello.advanced.trace.logtrace.LogTrace
 
-class OrderControllerProxy(
+class OrderControllerInterfaceProxy(
     private val target: OrderControllerV1,
     private val trace: LogTrace
 ) : OrderControllerV1 {
