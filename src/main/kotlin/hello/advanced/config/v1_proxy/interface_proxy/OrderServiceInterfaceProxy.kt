@@ -11,7 +11,7 @@ class OrderServiceInterfaceProxy(
 
     override fun save(itemId: String) {
         val template = TraceTemplate(trace)
-        template.execute("OrderService.request()") {
+        template.execute("OrderService.save()") {
             target.save(itemId)
         }
     }
