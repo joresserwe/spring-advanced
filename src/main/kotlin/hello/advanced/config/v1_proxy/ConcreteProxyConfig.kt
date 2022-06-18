@@ -1,5 +1,8 @@
 package hello.advanced.config.v1_proxy
 
+import hello.advanced.app.v2.OrderControllerV2
+import hello.advanced.app.v2.OrderRepositoryV2
+import hello.advanced.app.v2.OrderServiceV2
 import hello.advanced.config.v1_proxy.concrete_proxy.OrderControllerConcreteProxy
 import hello.advanced.config.v1_proxy.concrete_proxy.OrderRepositoryConcreteProxy
 import hello.advanced.config.v1_proxy.concrete_proxy.OrderServiceConcreteProxy
@@ -15,17 +18,17 @@ class ConcreteProxyConfig {
     fun trace() = ThreadLocalLogTrace()
 
     @Bean
-    fun orderControllerProxy(): OrderControllerConcreteProxy {
-        return OrderControllerConcreteProxy(orderServiceProxy(), trace())
+    fun orderController(): OrderControllerV2 {
+        return OrderControllerConcreteProxy(orderService(), trace())
     }
 
     @Bean
-    fun orderServiceProxy(): OrderServiceConcreteProxy {
-        return OrderServiceConcreteProxy(orderRepositoryProxy(), trace())
+    fun orderService(): OrderServiceV2 {
+        return OrderServiceConcreteProxy(orderRepository(), trace())
     }
 
     @Bean
-    fun orderRepositoryProxy(): OrderRepositoryConcreteProxy {
+    fun orderRepository(): OrderRepositoryV2 {
         return OrderRepositoryConcreteProxy(trace())
     }
 
