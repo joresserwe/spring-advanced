@@ -1,6 +1,6 @@
 package hello.advanced
 
-import hello.advanced.config.v5_autoproxy.AutoProxyConfig
+import hello.advanced.config.v6_aop.AopConfig
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Import
@@ -13,7 +13,8 @@ import org.springframework.context.annotation.Import
 //@Import(ProxyFactoryConfigV1::class)
 //@Import(ProxyFactoryConfigV2::class)
 //@Import(BeanPostProcessorConfig::class)
-@Import(AutoProxyConfig::class)
+//@Import(AutoProxyConfig::class)
+@Import(AopConfig::class)
 @SpringBootApplication(scanBasePackages = ["hello.advanced.app"])
 class AdvancedApplication
 
