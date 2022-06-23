@@ -41,6 +41,4 @@ class AopTest : FunSpec() {
             }
         }
     }
-
-
 }
